@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\Friend\FriendController;
   
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,10 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('profile', [ProfileController::class, 'index'])->name('profile'); 
 Route::get('profile_edit', [ProfileController::class, 'edit'])->name('profile_edit'); 
 Route::post('profile-update', [ProfileController::class, 'update'])->name('profile.update');
+
+//friend  //chu y: post phai co  @csrf
+Route::get('friend', [FriendController::class, 'index'])->name('friend'); 
+Route::post('friend-apply', [FriendController::class, 'apply'])->name('friend.apply');
+Route::post('friend-dele', [FriendController::class, 'dele'])->name('friend.dele');
+Route::post('friend-add', [FriendController::class, 'add'])->name('friend.add');
+Route::get('friend-list', [FriendController::class, 'list'])->name('friend.list');

@@ -93,11 +93,21 @@ class ProfileController extends Controller
             [
                 //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
                 'photo' => 'mimes:jpg,jpeg,png,gif|max:2048',
+
+                'name'=>'max:255',
+                'address'=>'max:255',
+                'hobbies'=>'max:255',
+                'job'=>'max:255',
+                'description'=>'max:4294967295 ',
             ],			
             [
                 //Tùy chỉnh hiển thị thông báo không thõa điều kiện
                 'photo.mimes' => 'Chỉ chấp nhận hình thẻ với đuôi .jpg .jpeg .png .gif',
-                'photo.max' => 'Hình thẻ giới hạn dung lượng không quá 2M',
+                'name.max' => 'Nhập không quá 50 ký tự',
+                'address.max' => 'Nhập không quá 50 ký tự',
+                'hobbies.max' => 'Nhập không quá 50 ký tự',
+                'job.max' => 'Nhập không quá 50 ký tự',
+                'description.max' => 'Nhập không quá 4294967295 ký tự',
             ]
         );
 
@@ -126,20 +136,7 @@ class ProfileController extends Controller
             'photo'=>$avatarName
         ]);
 
-        // $prof = DB :: table('users') 
-        //         -> select('*') 
-        //         -> where('id','=', Auth::user()->id);
-
-        // $prof2 = $prof -> find(Auth::user()->id);
-
-        // $prof2->name = $request->name;
-        // $prof2->email = $request->email;
-        // $prof2->address = $request->address;
-        // $prof2->hobbies = $request->hobbies;
-        // $prof2->job = $request->job;
-        // $prof2->description = $request->description;
-
-        // $prof2->save();
+     
         return redirect()->intended('profile')
         ->withSuccess('Edit Success!');
     }

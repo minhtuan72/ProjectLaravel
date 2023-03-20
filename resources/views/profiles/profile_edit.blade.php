@@ -60,8 +60,20 @@
             object-fit: circle(50px at 50% 50%); 
             margin: auto;
         }
-    </style>
-    
+    </style>  
+    <script
+        src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin">
+    </script>
+    <script>
+         tinymce.init({
+            selector: 'textarea#timymce',
+            
+            height: 200,
+            width: 500,
+            
+        });
+     </script> 
 </head>
 <body>
     <!-- Navbar top -->
@@ -102,7 +114,7 @@
                                 <td>
                                     <div class="form-group">
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control" name="name" value = "{{$row->name}}" required autofocus>
+                                            <input type="text" class="form-control" name="name" value = "{{$row->name}}">
                                             @if ($errors->has('name'))
                                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                                             @endif
@@ -128,6 +140,9 @@
                                     <div class="form-group">
                                         <div class="col-md-6">
                                             <input type="text" class="form-control" name="address" value = "{{$row->address}}">
+                                            @if ($errors->has('address'))
+                                                <span class="text-danger">{{ $errors->first('address') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
@@ -139,6 +154,9 @@
                                     <div class="form-group">
                                         <div class="col-md-6">
                                             <input type="text" class="form-control" name="hobbies" value = "{{$row->hobbies}}">
+                                            @if ($errors->has('hobbies'))
+                                                <span class="text-danger">{{ $errors->first('hobbies') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
@@ -150,6 +168,9 @@
                                     <div class="form-group">
                                         <div class="col-md-6">
                                             <input type="text" class="form-control" name="job" value = "{{$row->job}}">
+                                            @if ($errors->has('job'))
+                                                <span class="text-danger">{{ $errors->first('job') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
@@ -160,7 +181,10 @@
                                 <td>
                                     <div class="form-group">
                                         <div class="col-md-6">
-                                            <textarea cols="50" rows="5" name="description">{{$row->description}}</textarea>
+                                            <textarea cols="50" rows="5" id="timymce" name="description">{{$row->description}}</textarea>
+                                            @if ($errors->has('description'))
+                                                <span class="text-danger">{{ $errors->first('description') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
@@ -169,7 +193,7 @@
                                 <td>Avatar</td>
                                 <td>:</td>
                                 <td>
-                                    <input id="photo" type="file" class="form-control" name="photo" value="{{$row->photo}}" required autocomplete="photo">
+                                    <input id="photo" type="file" class="form-control" name="photo" value="{{$row->photo }}" required autocomplete="photo">
                                     @if ($errors->has('photo'))
                                       <span class="text-danger">{{ $errors->first('photo') }}</span>
                                     @endif

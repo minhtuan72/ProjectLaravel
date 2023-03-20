@@ -76,6 +76,12 @@
                     </li>
                 @else
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('friend') }}">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('friend.list') }}">Friend</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('profile') }}">Profile</a>
                     </li>
                     

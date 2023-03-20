@@ -73,10 +73,24 @@
                     <i class="fa fa-sign-out-alt fa-2x"></i>
                 </a>
             </li> -->
+            
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('friend') }}">Users</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('friend.list') }}">Friend</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('profile') }}">Profile</a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('doash') }}">Dashboard</a>
             </li>
-                    
+            
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('logout') }}"><font color="#FF0000">Logout</a>
             </li>
@@ -130,7 +144,7 @@
                         <tr>
                             <td>Description</td>
                             <td>:</td>
-                            <td>{{$row->description}}</td>
+                            <td>{!! $row->description !!}</td>
                         </tr>
                     </tbody>
                 </table>
