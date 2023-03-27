@@ -14,14 +14,18 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id;
+        if(Auth::check()){
+            $id = Auth::user()->id;
 
-        $prof = DB :: table('users') 
-                -> select('*') 
-                -> where('id','=', $id);
+            $prof = DB :: table('users') 
+                    -> select('*') 
+                    -> where('id','=', $id);
 
-        $prof1 = $prof -> get();
-        return view('profiles.profile', compact('prof1'));
+            $prof1 = $prof -> get();
+            return view('profiles.profile', compact('prof1'));
+        }
+  
+        return redirect("login")->withSuccess('Opps! You do not have access');
     }
 
     /**
@@ -73,14 +77,18 @@ class ProfileController extends Controller
      */
     public function edit()
     {
-        $id = Auth::user()->id;
+        if(Auth::check()){
+            $id = Auth::user()->id;
 
-        $prof = DB :: table('users') 
-                -> select('*') 
-                -> where('id','=', $id);
+            $prof = DB :: table('users') 
+                    -> select('*') 
+                    -> where('id','=', $id);
 
-        $prof1 = $prof -> get();
-        return view('profiles.profile_edit', compact('prof1'));
+            $prof1 = $prof -> get();
+            return view('profiles.profile_edit', compact('prof1'));
+        }
+  
+        return redirect("login")->withSuccess('Opps! You do not have access');
     }
 
     /**
@@ -88,57 +96,61 @@ class ProfileController extends Controller
      */
     public function update(Request $request )
     { 
-        //Kiểm tra ngoại lệ (Hiển thị ở page phải dùng $errors->has('photo'))
-        $this->validate($request, 
-            [
-                //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
-                'photo' => 'mimes:jpg,jpeg,png,gif|max:2048',
+        if(Auth::check()){
+            //Kiểm tra ngoại lệ (Hiển thị ở page phải dùng $errors->has('photo'))
+            $this->validate($request, 
+                [
+                    //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
+                    'photo' => 'mimes:jpg,jpeg,png,gif|max:2048',
 
-                'name'=>'max:255',
-                'address'=>'max:255',
-                'hobbies'=>'max:255',
-                'job'=>'max:255',
-                'description'=>'max:4294967295 ',
-            ],			
-            [
-                //Tùy chỉnh hiển thị thông báo không thõa điều kiện
-                'photo.mimes' => 'Chỉ chấp nhận hình thẻ với đuôi .jpg .jpeg .png .gif',
-                'name.max' => 'Nhập không quá 50 ký tự',
-                'address.max' => 'Nhập không quá 50 ký tự',
-                'hobbies.max' => 'Nhập không quá 50 ký tự',
-                'job.max' => 'Nhập không quá 50 ký tự',
-                'description.max' => 'Nhập không quá 4294967295 ký tự',
-            ]
-        );
+                    'name'=>'max:255',
+                    'address'=>'max:255',
+                    'hobbies'=>'max:255',
+                    'job'=>'max:255',
+                    'description'=>'max:4294967295 ',
+                ],			
+                [
+                    //Tùy chỉnh hiển thị thông báo không thõa điều kiện
+                    'photo.mimes' => 'Chỉ chấp nhận hình thẻ với đuôi .jpg .jpeg .png .gif',
+                    'name.max' => 'Nhập không quá 50 ký tự',
+                    'address.max' => 'Nhập không quá 50 ký tự',
+                    'hobbies.max' => 'Nhập không quá 50 ký tự',
+                    'job.max' => 'Nhập không quá 50 ký tự',
+                    'description.max' => 'Nhập không quá 4294967295 ký tự',
+                ]
+            );
 
-        //Xóa ảnh cũ
-        $getHT = DB::table('users')->select('photo')->where('id', '=', Auth::user()->id)->get();
-		if($getHT[0]->photo != '' && file_exists(public_path('upload/photo/'.$getHT[0]->photo)))
-		{
-			unlink(public_path('upload/photo/'.$getHT[0]->photo));
-		}
+            //Xóa ảnh cũ
+            $getHT = DB::table('users')->select('photo')->where('id', '=', Auth::user()->id)->get();
+            if($getHT[0]->photo != '' && file_exists(public_path('upload/photo/'.$getHT[0]->photo)))
+            {
+                unlink(public_path('upload/photo/'.$getHT[0]->photo));
+            }
 
-        //Tải file lên thư mục upload/photo
-        $image = $request->file('photo');
-        $avatarName = time().'.'.$image->getClientOriginalExtension();
-        $image->move(public_path('upload/photo'), $avatarName);
+            //Tải file lên thư mục upload/photo
+            $image = $request->file('photo');
+            $avatarName = time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('upload/photo'), $avatarName);
 
-        //Update dữ liệu
-        DB::table('users')
-        ->where('id', '=', Auth::user()->id)
-        ->update([
-            'name' => $request->name,
-            // 'email' => $request->email,
-            'address' => $request->input('address',''),
-            'hobbies' => $request->input('hobbies',''),
-            'job' => $request->input('job',''),
-            'description' =>$request->description,
-            'photo'=>$avatarName
-        ]);
+            //Update dữ liệu
+            DB::table('users')
+            ->where('id', '=', Auth::user()->id)
+            ->update([
+                'name' => $request->name,
+                // 'email' => $request->email,
+                'address' => $request->input('address',''),
+                'hobbies' => $request->input('hobbies',''),
+                'job' => $request->input('job',''),
+                'description' =>$request->description,
+                'photo'=>$avatarName
+            ]);
 
-     
-        return redirect()->intended('profile')
-        ->withSuccess('Edit Success!');
+        
+            return redirect()->intended('profile')
+            ->withSuccess('Edit Success!');
+        }
+    
+        return redirect("login")->withSuccess('Opps! You do not have access');
     }
 
     /**

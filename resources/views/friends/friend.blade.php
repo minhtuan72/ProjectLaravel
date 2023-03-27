@@ -41,20 +41,8 @@
             background-color: rgba(247, 247, 247, 1);
             box-shadow: 0 2px 4px rgba(0,0,0,.04);
         }
-        .navbar-brand , .nav-link, .my-form, .login-form
-        {
-            
-            font-family: Raleway, sans-serif;
-        }
-        .main {
-            margin-top: 2%;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 100%;
-            padding: 0 10px;
-            width:80%;
-            
-        }
+       
+        
         
         img {
             height: 220px;
@@ -91,86 +79,55 @@
         #right { float:right; } 
     </style>
 </head>
-  <body>
-  <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
-    <div class="container">
-        <a class="navbar-brand" href="#">Laravel</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<body>
+@extends('template1')
    
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                @guest
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}"><font color="#FF0000">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}"><font color="#FF0000">Register</a>
-                    </li>
-                @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('friend') }}">Users</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('friend.list') }}">Friend</a>
-                    </li>
+@section('content')
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('profile') }}">Profile</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('logout') }}"><font color="#FF0000">Logout</a>
-                    </li>
-                    
-                @endguest
-            </ul>
-  
-        </div>
-    </div>
-    </nav>
+ 
     <div class="main">
         <div class="row">
         <font color="#000000">
             @foreach($fen1 as $row)  
            
-                   <div class="column">
+                <div class="column">
                   <div class="card">
-                    <img src="/upload/photo/{{ $row->photo }}" >
-                        <div class="container">
-                            <h2 class="name">{{$row->name}}</h2>
-                            
-                            <div id="result">
-                               
                                     @php   
                                        $bien1 = 'Null';  
                                        $bien2 = 'Null';
                                     @endphp
                                 @foreach($check3 as $row1) 
                                     @if(($row1->user_nhan_id)==($row->id))
-                                        <br> 
+                                  
                                         @php   
                                             $bien1 = $row1 -> status;  
                                             $bien2 = 'nhan';
                                         @endphp
-                                            {{$bien1}}
-                                            <br>
-                                            {{$bien2}}
+                                        
                                         @break 
                                     @elseif(($row1->user_send_id)==($row->id))  
                                         @php   
                                             $bien1 = $row1 -> status;  
                                             $bien2 = 'send';
                                         @endphp
-                                            {{$bien1}}
-                                            <br>
-                                            {{$bien2}}
+                                      
                                         @break 
                                     @endif
                                 @endforeach
-                         
+                    <liv>   
+                        @if($bien1=="Y")
+                            <a href="{{ route('friend.page', $row->id) }}"> 
+                                <img  src="/upload/photo/{{ $row->photo }}">
+                            </a>
+                        @else
+                            <img  src="/upload/photo/{{ $row->photo }}">
+                        @endif
+                    </liv>
+                        <div class="container">
+                            <h2 class="name">{{$row->name}}</h2>
+                            
+                            <div id="result">
+
                             </div>
                            
                             <p class="title">Job: {{$row->job}}</p>
@@ -296,13 +253,15 @@
                             });
                         } else {
                             console.log("Hủy thao tác");
-                        }    
-                        
+                        }     
                     }
+
+                   
                 </script>
                         
         </div>
     </div>
+    @endsection
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script

@@ -1,13 +1,16 @@
-<!doctype html>
+<!Doctype html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>DemoLrv10</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  
+    <!-- CSS tuy chinh -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <style type="text/css">    
         @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
   
@@ -53,20 +56,59 @@
                 -moz-background-size: cover;
                 -o-background-size: cover; 
         }
-        
+        .my-form
+        {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        .my-form .row
+        {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .login-form
+        {
+            
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        .login-form .row
+        {
+            
+            margin-left: 0;
+            margin-right: 0;
+        }
+        /* .nav-link
+        {
+            color: #B22222;
+        } */
+       
     </style>
+    <script
+        src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin">
+    </script>
+    <script>
+         tinymce.init({
+            selector: 'textarea#timymce',
+            
+            height: 300,
+            width: 690,
+            
+        });
+    </script> 
 
-  </head>
+</head>
   <body>
-  <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
-    <div class="container">
-        <a class="navbar-brand" href="#">Laravel</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+   <header>
+      <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+        <a class="navbar-brand" href="#">DemoLrv10</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
-   
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+
+        <ul class="navbar-nav ml-auto">
                 @guest
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}"><font color="#FF0000">Login</a>
@@ -93,44 +135,33 @@
                         <a class="nav-link" href="{{ route('profile') }}">Profile</a>
                     </li>
                     
+                    <form class="form-inline mt-2 mt-md-0">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}"><font color="#FF0000">Logout</a>
                     </li>
-                    
                 @endguest
             </ul>
-  
         </div>
-    </div>
-    </nav>
-  <font color="#000000">
-  <div class="container">
-      <div class="row justify-content-center">
-          <div class="col-md-8">
-              <div class="card">
-                  <div class="card-header">{{ __('Dashboard') }}</div>
+      </nav>
+    </header>
     
-                  <div class="card-body">
-                      @if (session('success'))
-                          <div class="alert alert-success" role="alert">
-                              {{ session('success') }}
-                          </div>
-                      @endif
+   
+@yield('content')
     
-                      You are Logged In
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-
-      
+    <footer class="blog-footer">
+      <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>    
   </body>
 </html>
-
-

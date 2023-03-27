@@ -6,8 +6,7 @@
     <title>Profile Page</title>
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="app.css">
-    <link rel="stylesheet" type="text/css" href="{{ Vite::asset('resources/css/app.css') }}">
+   
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <!-- FontAwesome 5 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
@@ -76,30 +75,15 @@
      </script> 
 </head>
 <body>
-    <!-- Navbar top -->
-    <div class="navbar-top">
-        <div class="title">
-            <h1>Profile Edit</h1>
-        </div>
-
-        <!-- Navbar -->
-        <ul>
-                <a href="{{ route('profile') }}">
-                    <i class="fa fa-sign-out-alt fa-2x"></i>
-                </a>
-            </li>
-        </ul>
-        <!-- End -->
-    </div>
-    <!-- End -->
-
+@extends('template1')
    
-    <!-- End -->
+   @section('content')
+   
 
     <!-- Main -->
     <div id="test">
     <div class="main" >
-        <h2>IDENTITY</h2>
+        <h2 style="color: #fff">IDENTITY</h2>
         <div class="card">
             <div class="card-body">
                 @foreach($prof1 as $row)
@@ -217,4 +201,5 @@
         </div>
     </div>
 </body>
+@endsection
 </html>

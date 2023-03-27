@@ -21,14 +21,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($prof1 as $row)
-        <tr>
-            <td>{{$row->id}}</td>
-            <td>{{$row->name}}</td>
-            <td>{{$row->email}}</td>
-            <td>Edit | Delete</td>
-        </tr>
+    {{Auth::user()->id}}
+        <br>
+    
+        <br>
+        
+    @foreach($post5 as $p)
+        @foreach($p as $p1)
+            {{$p1->id_user}}
         @endforeach
+    @endforeach
     </tbody>
 </table>
     

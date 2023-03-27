@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Friend\FriendController;
+use App\Http\Controllers\Post\PostController;
+use App\Http\Controllers\Post\CommentController;
   
 /*
 |--------------------------------------------------------------------------
@@ -43,3 +45,18 @@ Route::post('friend-apply', [FriendController::class, 'apply'])->name('friend.ap
 Route::post('friend-dele', [FriendController::class, 'dele'])->name('friend.dele');
 Route::post('friend-add', [FriendController::class, 'add'])->name('friend.add');
 Route::get('friend-list', [FriendController::class, 'list'])->name('friend.list');
+Route::get('friend-page/{id}', [FriendController::class, 'show'])->name('friend.page');
+
+//Post & comment
+Route::get('post', [PostController::class, 'index'])->name('post'); 
+Route::post('post-store', [PostController::class, 'store'])->name('posts.store'); 
+Route::get('post-create', [PostController::class, 'create'])->name('posts.create');
+Route::get('post-show', [PostController::class, 'show'])->name('posts.show');
+Route::get('post-edit/{id}', [PostController::class, 'edit'])->name('posts.post_edit');
+Route::post('post-update', [PostController::class, 'update'])->name('posts.update'); 
+Route::post('post-dele', [PostController::class, 'dele'])->name('posts.dele'); 
+Route::get('post-show-friend', [PostController::class, 'show_friend'])->name('posts.show_friend');
+
+Route::get('test', [PostController::class, 'test'])->name('test'); 
+
+Route::post('comment', [CommentController::class, 'store'])->name('comments.store'); 

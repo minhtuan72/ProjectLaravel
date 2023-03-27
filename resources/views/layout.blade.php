@@ -4,7 +4,7 @@
     <title>DemoLrv10</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <!-- <link href="../css/style.css" rel="stylesheet" type="text/css" media="all"/> -->
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <style type="text/css">    
         @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
   
@@ -76,7 +76,21 @@
         {
             color: #B22222;
         } */
+       
     </style>
+    <script
+        src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin">
+    </script>
+    <script>
+         tinymce.init({
+            selector: 'textarea#timymce',
+            
+            height: 300,
+            width: 690,
+            
+        });
+    </script> 
 </head>
 <body>
     
@@ -98,6 +112,25 @@
                     </li>
                 @else
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('posts.show_friend') }}">Posts friend</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('posts.show') }}">Posts</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('friend') }}">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('friend.list') }}">Friend</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('profile') }}">Profile</a>
+                    </li>
+                    
+
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}"><font color="#FF0000">Logout</a>
                     </li>
                 @endguest
@@ -110,4 +143,10 @@
 @yield('content')
      
 </body>
+<script
+        src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </html>

@@ -14,17 +14,21 @@ class FriendController extends Controller
      */
     public function index()
     {
-        $fen = DB :: table('users') 
+        if(Auth::check()){
+            $fen = DB :: table('users') 
                 -> where('id','<>', Auth::user()->id);
 
-        $fen1 = $fen -> get();
+            $fen1 = $fen -> get();
 
-        $check = DB::table('tbl_relations')
-                -> where('user_send_id','=', Auth::user()->id)
-                ->orwhere('user_nhan_id','=', Auth::user()->id);
-        $check2 = $check -> pluck('user_nhan_id');
-        $check3 = $check -> get();
-        return view('friends.friend', compact('fen1','check2', 'check3'));
+            $check = DB::table('tbl_relations')
+                    -> where('user_send_id','=', Auth::user()->id)
+                    ->orwhere('user_nhan_id','=', Auth::user()->id);
+            $check2 = $check -> pluck('user_nhan_id');
+            $check3 = $check -> get();
+            return view('friends.friend', compact('fen1','check2', 'check3'));
+        }
+        return redirect("login")->withSuccess('Opps! You do not have access');
+        
     }
 
     /**
@@ -46,9 +50,35 @@ class FriendController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(Request $request)
+    { 
+        if(Auth::check()){
+            $id = $request -> id;
+            $iduser = Auth::user()->id;
+            $isExist =    DB :: table('tbl_relations') 
+                    -> select('*')
+                    ->where([
+                        ["user_nhan_id", '=', $id],
+                        ["user_send_id", '=', $iduser],
+                        ["status", '=', 'Y']
+                    ])
+                    ->orwhere([
+                        ["user_nhan_id", '=', $iduser],
+                        ["user_send_id", '=', $id],
+                        ["status", '=', 'Y']
+                    ])
+                    ->exists();
+            
+                    if ($isExist) {
+                        $sh = DB :: table('users') 
+                            -> where('id','=', $id)
+                            ->first();
+                        return view('friends.friend_page', compact('sh'));
+                    }else{               
+                        return 'Truy cap khong hop le!';
+                    }
+            }
+            return redirect("login")->withSuccess('Opps! You do not have access');
     }
 
     /**
@@ -117,6 +147,7 @@ class FriendController extends Controller
         //     ->where("user_nhan_id", $id)
         //     ->exists();
 
+        //Kiem tra 2 user co quan he chua
         $isExist =    DB :: table('tbl_relations') 
                 -> select('*')
                 ->where([
@@ -148,24 +179,27 @@ class FriendController extends Controller
 
     public function list()
     {
-        $ch = DB::table('tbl_relations')
-                -> where([
-                    ['user_send_id','=', Auth::user()->id],
-                    ['status','=', 'Y']
-                ])
-                ->orwhere([
-                    ['user_nhan_id','=', Auth::user()->id],
-                    ['status','=', 'Y']
-                ]);
-        $ch1 = $ch -> get();  
-              
-        $fen = DB :: table('users') 
-                -> where('id','<>', Auth::user()->id);
+        if(Auth::check()){
+            $ch = DB::table('tbl_relations')
+                    -> where([
+                        ['user_send_id','=', Auth::user()->id],
+                        ['status','=', 'Y']
+                    ])
+                    ->orwhere([
+                        ['user_nhan_id','=', Auth::user()->id],
+                        ['status','=', 'Y']
+                    ]);
+            $ch1 = $ch -> get();  
+                
+            $fen = DB :: table('users') 
+                    -> where('id','<>', Auth::user()->id);
 
-        $fen1 = $fen -> get();
+            $fen1 = $fen -> get();
 
+            
         
-       
-        return view('friends.friend_list', compact('fen1','ch1'));
+            return view('friends.friend_list', compact('fen1','ch1'));
+        }
+        return redirect("login")->withSuccess('Opps! You do not have access');
     }
 }

@@ -47,15 +47,19 @@
     </style>
     
 </head>
+@extends('template1')
+   
+@section('content')
 <body>
+
     <!-- Navbar top -->
-    <div class="navbar-top">
+    <!-- <div class="navbar-top">
         <div class="title">
             <h1>Profile</h1>
-        </div>
+        </div> -->
 
         <!-- Navbar -->
-        <ul>
+        <!-- <ul> -->
             <!-- <li>
                 <a href="#message">
                     <span class="icon-count">29</span>
@@ -75,7 +79,7 @@
             </li> -->
             
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="{{ route('friend') }}">Users</a>
             </li>
             
@@ -94,9 +98,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('logout') }}"><font color="#FF0000">Logout</a>
             </li>
-        </ul>
+        </ul> -->
         <!-- End -->
-    </div>
+    <!-- </div> -->
     <!-- End -->
 
    
@@ -192,4 +196,5 @@
     </div>
     <!-- End -->
 </body>
+@endsection
 </html>
