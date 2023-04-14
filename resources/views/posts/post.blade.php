@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <h1>Manage Posts</h1>
             <a href="{{ route('posts.create') }}" class="btn btn-success" style="float: right">Create Post</a>
-            <table style="background-color: #3d4348" class="table table-bordered">
+            <table style="background-color: #fff" class="table table-bordered">
                 <thead>
                     <th>Title</th>
                     <th>Time</th>

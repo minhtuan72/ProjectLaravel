@@ -3,7 +3,7 @@
    
 @section('content')
 <font color="#000">
-<div class="container">
+<div class="container" style="margin-left: 10%;">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">

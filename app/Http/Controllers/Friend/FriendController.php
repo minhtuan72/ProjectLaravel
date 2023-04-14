@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Tbl_relations;
+use App\Models\User;
 
 class FriendController extends Controller
 {
@@ -75,7 +77,7 @@ class FriendController extends Controller
                             ->first();
                         return view('friends.friend_page', compact('sh'));
                     }else{               
-                        return 'Truy cap khong hop le!';
+                        return 'Khong phai ban be!';
                     }
             }
             return redirect("login")->withSuccess('Opps! You do not have access');
@@ -199,6 +201,50 @@ class FriendController extends Controller
             
         
             return view('friends.friend_list', compact('fen1','ch1'));
+        }
+        return redirect("login")->withSuccess('Opps! You do not have access');
+    }
+
+    public function mentions(Request $request)
+    {
+        if(Auth::check()){
+            // $ch = DB::table('tbl_relations')
+            //         -> where([
+            //             ['user_send_id','=', $request->id],
+            //             ['status','=', 'Y']
+            //         ])
+            //         ->orwhere([
+            //             ['user_nhan_id','=', $request->id],
+            //             ['status','=', 'Y']
+            //         ]);
+            // $ch1 = $ch 
+            //     -> select('user_send_id', 'user_nhan_id')    
+            //     -> get();  
+                
+            // $fen = DB :: table('users') 
+            //         -> select('name')
+            //         -> where('id','<>', Auth::user()->id);
+
+            // $fen1 = $fen -> get();
+
+            // $frd = User::with('rela')->get();
+            $frd = Tbl_relations::with('user')
+                    ->where([
+                        ['user_send_id','=',Auth::user()->id]
+                        ])
+                    ->get()
+                    ->pluck('user')->toArray();
+            $frd1 = Tbl_relations::with('user1')
+                    ->where([
+                        ['user_nhan_id','=',Auth::user()->id]
+                        ])
+                    ->get()
+                    ->pluck('user1')->toArray();
+            $fr = array_merge($frd, $frd1);  
+              
+            return $fr;
+
+            // return view('test2', compact('frd'));
         }
         return redirect("login")->withSuccess('Opps! You do not have access');
     }

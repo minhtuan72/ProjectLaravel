@@ -101,7 +101,7 @@
     </style>
     
 </head>
-@extends('template1')
+@extends('template2')
    
 @section('content')
 <body >

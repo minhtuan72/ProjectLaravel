@@ -6,6 +6,7 @@ use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Friend\FriendController;
 use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\Post\CommentController;
+use App\Http\Controllers\Matching\MatchingController;
   
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,9 @@ Route::get('/', function () {
 });
 Route::get('/test', function () {
     return view('test');
+});
+Route::get('/test2', function () {
+    return view('test2');
 });
 Route::get('/welcome', function () {
     return view('welcome');
@@ -47,6 +51,12 @@ Route::post('friend-add', [FriendController::class, 'add'])->name('friend.add');
 Route::get('friend-list', [FriendController::class, 'list'])->name('friend.list');
 Route::get('friend-page/{id}', [FriendController::class, 'show'])->name('friend.page');
 
+//Mentions @
+Route::post('friend-mentions', [FriendController::class, 'mentions'])->name('friend.mentions');
+
+//Preview
+Route::get('post-preview', [PostController::class, 'preview'])->name('posts.preview');
+
 //Post & comment
 Route::get('post', [PostController::class, 'index'])->name('post'); 
 Route::post('post-store', [PostController::class, 'store'])->name('posts.store'); 
@@ -60,3 +70,12 @@ Route::get('post-show-friend', [PostController::class, 'show_friend'])->name('po
 Route::get('test', [PostController::class, 'test'])->name('test'); 
 
 Route::post('comment', [CommentController::class, 'store'])->name('comments.store'); 
+
+//Matching
+Route::get('match', [MatchingController::class, 'index'])->name('match'); 
+Route::get('match-profile', [MatchingController::class, 'show'])->name('match.profile');
+Route::get('match-profile-edit', [MatchingController::class, 'edit'])->name('match.edit');
+Route::get('match-profile-edit-new', [MatchingController::class, 'edit'])->name('match.edit_new');
+Route::post('match-profile-update', [MatchingController::class, 'update'])->name('match.update');
+Route::get('match-profile-friend/{id}', [MatchingController::class, 'match_profile_friend'])->name('match.profile_friend'); 
+Route::post('match-add', [MatchingController::class, 'add'])->name('match.add');

@@ -20,9 +20,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <style type="text/css">    
         body {
-        font-size: .875rem;
+        font-size: 1rem;
+        position: relative;
         }
-        
+        .card-body
+        {
+         
+            background-attachment: fixed;
+                 /* background-position: center; */
+                background-size: cover;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover; 
+        }
+        .my-form
+        {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        .my-form .row
+        {
+            margin-left: 0;
+            margin-right: 0;
+        }
         .feather {
         width: 16px;
         height: 16px;
@@ -46,12 +66,12 @@
         }
 
         .sidebar-sticky {
-        
+        position: sticky;
         position: -webkit-sticky;
         position: sticky;
-        top: 50px; /* Height of navbar */
-        height: calc(100vh - 50px);
-        padding-top: .5rem;
+        top: 100px;
+        height: calc(100vh - 60px);
+        padding-top: 1rem;
         overflow-x: hidden;
         overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
         }
@@ -60,7 +80,9 @@
         font-weight: 700;
         color: #333;
         }
-
+        .nav-item {
+           height: 50px;
+        }
         .sidebar .nav-link .feather {
         margin-right: 4px;
         color: #999;
@@ -83,8 +105,8 @@
         /*
         * Navbar
         */
-
         .navbar-brand {
+        
         padding-top: .75rem;
         padding-bottom: .75rem;
         font-size: 1rem;
@@ -93,12 +115,10 @@
         }
 
         .navbar .form-control {
+            
         padding: .75rem 1rem;
         border-width: 0;
         border-radius: 0;
-        }
-        .nav-item {
-           height: 50px;
         }
 
         .form-control-dark {
@@ -118,72 +138,61 @@
 
         .border-top { border-top: 1px solid #e5e5e5; }
         .border-bottom { border-bottom: 1px solid #e5e5e5; }
- 
-        .card-body
-        {
-            background: url({{ Vite::asset('resources/image/anh1.jpg') }})no-repeat;
-            background-attachment: fixed;
-                 /* background-position: center; */
-                background-size: cover;
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover; 
+
+      
+
+        /* row */
+        #rowid.row {
+        display: grid;
+        grid-template-columns: 1fr 6fr repeat(2, 0fr);
+        grid-template-rows: repeat(5, 1fr);
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
         }
-        .my-form
-        {
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
-        }
-        .my-form .row
-        {
-            margin-left: 0;
-            margin-right: 0;
-        }
+
+        .div1 { grid-area: 1 / 1 / 2 / 2; }
+        .div2 { grid-area: 1 / 2 / 2 / 3; }
+        
+    
+
+       
     </style>
     <script
-        src="https://cdn.tiny.cloud/1/luipbi5g6jb2giurl5uugvudg24ir8x6peo06te9rfsdxupw/tinymce/5/tinymce.min.js"
+        src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"
         referrerpolicy="origin">
     </script>
     <script>
          tinymce.init({
             selector: 'textarea#timymce',
-            plugins: "autoresize bold italic strikethrough link numlist bullist blockquote emoticons image preview",
+            plugins: "emoticons",
+            toolbar: "emoticons",
             toolbar_location: "bottom",
             menubar: false,
-
-            // plugins: "autoresize",
-            autoresize_bottom_margin: 200,
-            max_height: 500,
-            // height: 350,
+            relative_urls: true,
+            document_base_url: "http://www.example.com/path1/",
+            height: 450,
             width: 526,
             
-            placeholder: "Enter message . . .",
-            toolbar:
-                "bold italic strikethrough link numlist bullist blockquote emoticons image preview",
-            
-            setup: function (editor) {
-                
-            },
         });
     </script> 
 
 </head>
-  <body style="background: rgb(239 242 245);">
-    <!-- Nav -->
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">DemoLrv10</a>
+  <body style="background: rgb(239 242 245); ">
+    <!-- Nav -->  
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" style="position: fixed;width: 100%;">
+      <a class="navbar-brand col-sm-3 mr-0" href="#" style="margin-left:2%; flex: 0 0 16.666667%; max-width: 15%;"> &nbsp;DemoLrv10</a>
       <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-      <ul class="navbar-nav px-3">
+      <ul class="navbar-nav " style="padding-left: 4rem!important; padding-right: 4rem!important; background: #252b30">
         @guest
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('login') }}"><font color="#FF0000">Login</a>
+                <a class="nav-link" href="{{ route('login') }}" style="color:#FF0000;">Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('register') }}"><font color="#FF0000">Register</a>
+                <a class="nav-link" href="{{ route('register') }}" style="color:#FF0000;">Register</a>
             </li>
         @else
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="{{ route('logout') }}">Sign out</a>
+            <a class="nav-link" href="{{ route('logout') }}" style="color:#fff;">Sign out</a>
         </li>
         @endguest
       </ul>
@@ -191,7 +200,7 @@
     <!-- End Nav -->
 
     <!-- Container -->
-    <div class="container">
+    <div class="container" >
 
       <!-- Div row -->
       <div id="rowid" class="row" >
@@ -200,7 +209,7 @@
         <div class="div1">
         <nav class="col-md-2 d-none d-md-block sidebar" style="margin-left:2%;">
           <div class="sidebar-sticky" style="background: rgb(239 242 245);">
-            <ul class="nav flex-column" style="font-size: medium;">
+            <ul class="nav flex-column">
                 @guest
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}" style="color:#FF0000;">Login</a>
@@ -280,14 +289,15 @@
         <!-- End sidebar -->
 
         <!-- Main -->
-        <main role="main" class="col-md-9 bx--col-sm-2 col-lg-10 pt-3 px-4">
+        <div class="div2">
+        <main role="main" class="col-md-9 bx--col-sm-2 col-lg-10 pt-3 px-4" style="width:55%;  position: absolute;">
             
                 @yield('content')
     
         
         </main>
+        </div>
         <!-- End main -->
-        
       </div>
       <!-- End div row -->
 

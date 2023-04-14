@@ -47,7 +47,7 @@
     </style>
     
 </head>
-@extends('template1')
+@extends('template2')
    
 @section('content')
 <body>
@@ -112,7 +112,7 @@
     <div class="main" >
         <h2>IDENTITY</h2>
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="background: none">
                 <a href="{{ route('profile_edit') }}" class="fa fa-pen fa-xs edit"></a>
                 @foreach($prof1 as $row)
                 <table>
@@ -158,7 +158,7 @@
 
         <h2>SOCIAL MEDIA</h2>
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="background: none">
                 <i class="fa fa-pen fa-xs edit"></i>
                 <div class="social-media">
                     <span class="fa-stack fa-sm">

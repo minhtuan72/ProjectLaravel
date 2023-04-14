@@ -34,9 +34,17 @@ class Tbl_relations extends Model
     //     return $this->hasMany(Post::class, 'id_user', 'user_nhan_id');
     // }
 
-    // public function user(){
-
-    //     return $this->hasMany(User::class, 'id','user_send_id');
-    // }
+    public function user(){
+        // if(Auth::user()->id == Tbl_relations::find(id)->user_nhan_id){
+        //     return $this->hasMany(User::class, 'id','user_send_id');
+        // }
+        return $this->hasMany(User::class, 'id','user_nhan_id');
+    }
+    public function user1(){
+        // if(Auth::user()->id == Tbl_relations::find(id)->user_nhan_id){
+        //     return $this->hasMany(User::class, 'id','user_send_id');
+        // }
+        return $this->hasMany(User::class, 'id','user_send_id');
+    }
     
 }

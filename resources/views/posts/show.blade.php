@@ -1,4 +1,4 @@
-@extends('template1')
+@extends('template')
    
 @section('content')
 
@@ -7,18 +7,18 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
         <!-- <h3 class="text-center text-success"  style="background-color: #fff;">{{Auth()->user()->name}}</h3> -->
-        <div style="width: 100%; background-color:##1c2e42; border-style: outset;  border-radius: 10px 10px 10px;">
-            <a style="width: 50%; margin: auto;" name="" id="" class="btn btn-primary" href="{{ route('post') }}" role="button">List post</a>
-            <a style="width: 49%; float: right;" name="" id="" class="btn btn-primary" href="{{ route('posts.create') }}" role="button">Create post</a>
+        <div style="width: 100%; background-color:##1c2e42; border-style: outset;  border-radius: 10px 10px 10px; margin-top: 9%;">
+            <a style="width: 50%; margin: auto;" name="" id="" class="btn btn-secondary" href="{{ route('post') }}" role="button">List post</a>
+            <a style="width: 49%; float: right;" name="" id="" class="btn btn-secondary" href="{{ route('posts.create') }}" role="button">Create post</a>
         </div>
             
         
         @foreach($post as $post)
         
             <div class="card" >
-                <div style="background-color:#c8d6e6; border-style: outset;  border-radius: 10px 10px 10px;">
+                <div style="background-color:#fff; border-style: outset;  border-radius: 10px 10px 10px;">
                 <div class="group">
-                    <div class="btn-group" style="float: right; margin-right:3%; margin-top: 2%;"  >
+                    <div class="btn-group" style="float: right; margin-right:3%; margin-top: 5%;"  >
                     
                         @if( $post->status =="public")
                             <div style="float: right;  width: 100%;" >
@@ -97,7 +97,7 @@
                     $tmp = $post->id;
                 @endphp
                 
-                <div class="card-body1" style="background-color: #c8d6e6; border-radius: 20px 20px 20px;">
+                <div class="card-body" style="background-color: #c8d6e6; border-radius: 20px 20px 20px;">
                 
                     <div style="margin: auto;  width: 100%; background-color: #fff;  padding: 10px;">
                         <hr style="margin: auto;  width: 100%; "/>

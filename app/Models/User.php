@@ -52,10 +52,21 @@ class User extends Authenticatable
     // {
     //     return $this->hasMany(Post::class, 'id_user')->where('status','=','public');
     // }
-    // public function rela()
-    // {
-    //     return $this->hasMany(Tbl_relations::class, 'user_send_id','id')->where('status','=','Y'); 
-    // }
+    public function rela()
+    {
+        return $this->hasMany(Tbl_relations::class, 'user_send_id','id')->where('status','=','Y'); 
+    }
+
+    public function detail()
+    {
+        return $this->hasOne(UserDetail::class, 'user_id','id'); 
+    }
+ 
+    public function interestFunction()
+    {
+        return $this->belongsToMany(Interests::class, 'user_interests', 'user_id', 'interest_id');
+    }
+
     // public function rela2()
     // {
     //     return $this->hasMany(Tbl_relations::class, 'user_send_id') 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use Xetaio\Mentions\Parser\MentionParser;
+
 class CommentController extends Controller
 {
     /**
@@ -18,9 +20,23 @@ class CommentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        // Handle the comment creation however you like
+        $comment = Comment::create($request->all());
+
+        // Register a new Parser and parse the content.
+        $parser = new MentionParser($comment);
+        $content = $parser->parse($comment->content);
+
+        /**
+         * Re-assign the parsed content and save it.
+         *
+         * Note : If you use a custom Parser and you don't modify
+         * the `$content` in your custom Parser, you can ignore that.
+         */
+        $comment->content = $content;
+        $comment->save();
     }
 
     /**
@@ -28,15 +44,22 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'body'=>'required',
-        ]);
+        // $request->validate([
+        //     'body'=>'required',
+        // ]);
    
         $input = $request->all();
-        $input['user_id'] = auth()->user()->id;
-    
-        Comment::create($input);
-   
+        
+        $input['user_id'] = auth()->user()->id;//chèn thêm trường user_id
+
+        // dd($input['body']);
+        
+        // dd($input);
+        $comment = Comment::create($input);
+        
+        $parser = new MentionParser($comment);
+        $content = $parser->parse($comment->content);
+        //return redirect("test2");
         return back();
     }
 

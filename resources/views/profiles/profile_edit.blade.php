@@ -81,7 +81,7 @@
    
 
     <!-- Main -->
-    <div id="test">
+    <div id="test" style="margin-left: 200px;">
     <div class="main" >
         <h2 style="color: #fff">IDENTITY</h2>
         <div class="card">
@@ -90,15 +90,28 @@
                 <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                    
                     @csrf
-                    <table>
+                    <table class="tbl">
                         <tbody>
                             <tr>
-                                <td>Name</td>
+                                <td><strong>Avatar</strong></td>
+                                <td>:</td>
+                                <td>
+                                    <input id="photo" type="file" class="form-control" name="photo" value="{{$row->photo }}" required autocomplete="photo" style="width: 44%; margin-left: 3%;margin-bottom: 2%;">
+                                    @if ($errors->has('photo'))
+                                      <span class="text-danger">{{ $errors->first('photo') }}</span>
+                                    @endif
+                                </td>    
+                            </tr>
+                            <tr >
+                                <img src="/upload/photo/{{ Auth::user()->photo }}" style="margin-left: 30%;">
+                            </tr> 
+                            <tr>
+                                <td><strong>Name</strong></td>
                                 <td>:</td>
                                 <td>
                                     <div class="form-group">
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control" name="name" value = "{{$row->name}}">
+                                            <input type="text" class="form-control" name="name" value = "{{$row->name}}" >
                                             @if ($errors->has('name'))
                                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                                             @endif
@@ -106,19 +119,8 @@
                                     </div>
                                 </td>
                             </tr>
-                            <!-- <tr>
-                                <td>Email</td>
-                                <td>:</td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="col-md-6">
-                                            <input type="text" class="form-control" name="email" value = "{{$row->email}}" required autofocus>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr> -->
                             <tr>
-                                <td>Address</td>
+                                <td><strong>Address</strong></td>
                                 <td>:</td>
                                 <td>
                                     <div class="form-group">
@@ -132,7 +134,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Hobbies</td>
+                                <td><strong>Hobbies</strong></td>
                                 <td>:</td>
                                 <td>
                                     <div class="form-group">
@@ -146,7 +148,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Job</td>
+                                <td><strong>Job</strong></td>
                                 <td>:</td>
                                 <td>
                                     <div class="form-group">
@@ -160,7 +162,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Description</td>
+                                <td><strong>Description</strong></td>
                                 <td>:</td>
                                 <td>
                                     <div class="form-group">
@@ -172,21 +174,7 @@
                                         </div>
                                     </div>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>Avatar</td>
-                                <td>:</td>
-                                <td>
-                                    <input id="photo" type="file" class="form-control" name="photo" value="{{$row->photo }}" required autocomplete="photo">
-                                    @if ($errors->has('photo'))
-                                      <span class="text-danger">{{ $errors->first('photo') }}</span>
-                                    @endif
-                                </td>    
-                                <td>
-                                    <img src="/upload/photo/{{ Auth::user()->photo }}" >
-
-                                </td>
-                            </tr>
+                            </tr>  
                         </tbody>
                     </table>
                     <div class="col-md-6 offset-md-4">

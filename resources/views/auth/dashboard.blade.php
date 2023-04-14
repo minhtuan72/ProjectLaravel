@@ -57,52 +57,12 @@
     </style>
 
   </head>
-  <body>
-  <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
-    <div class="container">
-        <a class="navbar-brand" href="#">Laravel</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+@extends('template1')
    
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                @guest
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}"><font color="#FF0000">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}"><font color="#FF0000">Register</a>
-                    </li>
-                @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('posts.show_friend') }}">Posts friend</a>
-                    </li>
+@section('content')
+  <body>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('posts.show') }}">Posts</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('friend') }}">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('friend.list') }}">Friend</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('profile') }}">Profile</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('logout') }}"><font color="#FF0000">Logout</a>
-                    </li>
-                    
-                @endguest
-            </ul>
-  
-        </div>
-    </div>
-    </nav>
+ 
   <font color="#000000">
   <div class="container">
       <div class="row justify-content-center">
@@ -123,7 +83,7 @@
           </div>
       </div>
   </div>
-
+  @endsection
       
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

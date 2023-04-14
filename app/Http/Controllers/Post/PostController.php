@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Tbl_relations;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Goutte\Client;
 
 class PostController extends Controller
 {
@@ -19,6 +21,7 @@ class PostController extends Controller
      */
     public function index()
     {
+        
         Carbon::setLocale('vi'); 
         $post = Post::all();
         $posts = $post -> where('id_user','=', Auth::user()->id);
@@ -79,6 +82,7 @@ class PostController extends Controller
      */
     public function show()
     {
+        //dd(Post::max('created_at'));
         // $id = $request -> id;
         // $post1 = Post::find($id);
         $post2 = Post::all();
@@ -157,24 +161,7 @@ class PostController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request)
-    {
-       
-    // //    if($request->photo === null ){
-         
-    // //      return "khong de trong";
-    // //    } else{
-    // //     $check = $request->photo;
-    //     $request->validate(
-    //         [
-    //             'photo'=>'required', 
-    //         ],
-    //         [
-    //             'photo' =>  'Khong de trong!',
-    //         ]
-    //     );
-        
-    //     return $request;
-       
+    {     
         $post1 = Post::find($request->id);
         $request->validate(
             [
@@ -236,6 +223,121 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function preview()
+    {
+        $content = request()->content;
+        $id = request()->id;
+        $content_test="";
+        $id_tag1 = Comment::all();
+        $id_tag = $id_tag1 -> where('id','=', $id)->pluck('id_tag');
+        //json_decode($json_string, true);
+        //$id_tag = request()->id_tag;
+        
+        //$id_tag_test = Comment::find($id)->pluck('id_tag');
+
+        /**Check URL**/
+        $urls = preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $content, $match);
+        $results = [];
+        $results_tag = [];
+
+        if ($urls > 0) {
+           //Lay het url
+            $url1 = "";  
+            $data = array();
+            for($i = 0; $i<$urls; $i++){
+                $data[$match[0][$i]] =$match[0][$i];
+            }
+            $data = array_keys($data);
+            //$test = json_encode( $data[1]);
+            for($i = 0; $i<count($data); $i++){
+                $url1 =$data[$i];
+                $url2 = substr($url1,0,50)."...";
+               
+                $content = str_replace($url1, "<a style=color:#385898 href=$url1> $url2 </a>", $content);
+            }
+            
+            //lay url dau tien trong bai viet
+            $url = $match[0][0];
+            
+            //gui request đến website cần lấy thông tin
+            $client = new Client();
+            try{
+                $crawler = $client->request('GET', $url);
+
+                //dam bao url la hop le
+                $status_code = $client->getResponse();
+                // if ($status_code == 200) {
+                    //Lay title, desc, image
+                    $title = $crawler->filterXPath('html/head/title')->text(); // Hoac: $crawler->filterXpath('//meta[@name="title"]')->attr('content');  
+
+                    //check xem co the meta title, desc, image... hay khong
+                    if ($crawler->filterXpath('//meta[@name="description"]')->count()) {
+                        $description = $crawler->filterXpath('//meta[@name="description"]')->attr('content');
+                    }
+
+                    if ($crawler->filterXpath('//meta[@name="og:image"]')->count()) {
+                        $image = $crawler->filterXpath('//meta[@name="og:image"]')->attr('content');
+                    } elseif ($crawler->filterXpath('//meta[@name="twitter:image"]')->count()) {
+                        $image = $crawler->filterXpath('//meta[@name="twitter:image"]')->attr('content');
+                    } else { //neu khong co thi lay anh bat ky
+                        if ($crawler->filter('img')->count()) {
+                            $image = $crawler->filter('img')->attr('src');
+                        } else {
+                            $image = 'no_image';
+                        }
+                    }
+
+                    $results['title'] = $title;
+                    $results['url'] = $url;
+                    $results['host'] = parse_url($url)['host'];
+                    $results['description'] = isset($description) ? $description : '';
+                    $results['image'] = $image;
+                    $results['id'] = $id;
+                    //$results['content'] =  $content;
+                    
+                   
+                // }
+            } catch (Exception $e) {
+                // log
+            }            
+        }
+
+        /**Check tag user **/
+        // if($id_tag!=""){
+           // $name_tag = User::find($id_tag)->pluck('name')->first();
+           // $name_tag_test = User::find($id_tag_test)->pluck('name');
+            //$name_tag2 =  $name_tag1 -> where('id','=',$id_tag)->name;
+            //$name_tag = json_encode($name_tag1);
+            //$name = "@".$name_tag;
+           // $url_name= "route('friend.page',".$id_tag.")";
+            //$url_name1 = "http://demolrv10.com/friend-page/".$id_tag;
+            // $content = str_replace($name, "<a style=color:#385898 href=$url_name1 > $name_tag </a>", $content);
+              
+        // }else{
+        //     $id_tag="rong";
+        // }
+        $text = json_decode($id_tag,true);
+        $name_tag1 = User::all();
+        $name_tag = $name_tag1 -> where('id','=', $text[0])->pluck('name')->first();
+        $text2 = json_decode($name_tag,true);
+        $t = "@".$name_tag;
+        $url_name1 = "http://demolrv10.com/friend-page/".$text[0];
+
+        //$content = str_replace($t,"<a style=color:black; font-weight: 900; href=$url_name1><i> $t</i></a>", $content);
+
+        $results_tag['tag_id'] =  $text[0];
+        $results_tag['tag_name'] = $content;
+        $results_tag['id'] = $id;
+       
+        //return
+        if (count($results,1) > 0) {
+            $results['content'] =  $content;
+            return response()->json(['success' => true, 'data' => $results,'data_tag'=>$results_tag]);
+        }
+    
+        return response()->json(['success' => false, 'data' =>  $results, 'data_tag'=>$results_tag]);
+        // return $content;
     }
 
     public function test()

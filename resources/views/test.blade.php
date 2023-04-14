@@ -21,14 +21,14 @@
         </tr>
     </thead>
     <tbody>
-    {{Auth::user()->id}}
+    <!-- {{Auth::user()->id}} -->
         <br>
     
         <br>
         
-    @foreach($post5 as $p)
+    @foreach($frd as $p)
         @foreach($p as $p1)
-            {{$p1->id_user}}
+            {{$p1}}
         @endforeach
     @endforeach
     </tbody>

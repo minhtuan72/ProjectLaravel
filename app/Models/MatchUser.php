@@ -7,27 +7,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Xetaio\Mentions\Models\Traits\HasMentionsTrait;
 
-class Comment extends Model
+class MatchUser extends Model
 {
     use HasFactory, SoftDeletes, HasMentionsTrait;
 
     protected $dates = ['deleted_at'];
+    
 
+    //thuoc tinh co the gan hang loat
     protected $fillable = [
-        'user_id', 
-        'post_id', 
-        'parent_id', 
-        'body',
-        'id_tag'
+        'user_id',         //id user 
+        'match_id',        //gui match
     ];
 
-    public function user(){
-
-        return $this->belongsTo(User::class);
-    }
-
-    public function replies(){
-        
-        return $this->hasMany(Comment::class, 'parent_id');
-    }
+    
+   
 }
