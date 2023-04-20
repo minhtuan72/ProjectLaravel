@@ -25,9 +25,9 @@
                 </div>
                 <div>
                     <!-- {{$m->id}} -->
-                    <h3 style="margin-bottom: 0;"><strong>&nbsp;{{$m->name}}, {{$m->detail->age}}</strong></h3>
+                    <h3 style="margin-bottom: 0;"><strong>&nbsp;{{$m->name}}, {{$m->detail->age??null}}</strong></h3>
                     
-                    <div style="font-size: small ">&nbsp;&nbsp;&nbsp; {{$m->detail->gender}}</div>
+                    <div style="font-size: small ">&nbsp;&nbsp;&nbsp; {{$m->detail->gender??null}}</div>
                     
                     <div style="font-size: larger; margin-left:3%"><small >{!!$m->description!!}</small></div>
                 </div>

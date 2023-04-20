@@ -19,39 +19,61 @@ class MatchingController extends Controller
      */
     public function index()
     {
-        $userDetail = User::with('detail')->find(Auth::user()->id);       
-        if($userDetail->detail==null){
-            return view('matching.match_profile_edit_new');
-        }else{
-            $itr_id = User::with('interestFunction')->find(Auth::user()->id)->interestFunction->pluck('id');
-            $user = Interests::with('user')->find($itr_id);
-            //dd($user);
-            $id = $user->pluck('user')->collapse()->pluck('id')->countBy()->keys()->take(20);
-            // dd($id);
-            // $id1 = $user->pluck('user')->collapse()->pluck('id')->take(20);
-            //dd($id);
-            //$match = array_keys(array_count_values($id->toArray()));
+        if(Auth::check()){
+            $userDetail = User::with('detail')->find(Auth::user()->id);       
+            if($userDetail->detail==null){
+                return view('matching.match_profile_edit_new');
+            }else{
+                $itr_id = User::with('interestFunction')->find(Auth::user()->id)->interestFunction->pluck('id');
+                
+                //sap xep khi tra ve mang collection
+                $user_match = Interests::with('user')->find($itr_id);
+                $id = $user_match->pluck('user')->collapse()->pluck('id')->countBy()->keys()->take(20);
+                //$user1 = DB::select('SELECT user_id, COUNT(1) as count FROM user_interests WHERE interest_id IN $itr_id GROUP BY user_id ORDER BY count DESC');
+                //sapxep khi truy van - toi uu hon
+                $id1 = UserInterest::select('user_id')
+                                    ->selectRaw('COUNT(1) as count')
+                                    ->groupBy('user_id')
+                                    ->orderByDesc('count')
+                                    ->whereIn('interest_id',$itr_id)
+                                    ->take(20)
+                                    ->pluck('user_id');
+                // dd($user2);
+                // $id1 = $user->pluck('user')->collapse()->pluck('id')->take(20);
+                //dd($id);
+                //$match = array_keys(array_count_values($id->toArray()));
 
-            // $interests = str_replace(',', '|', $userDetail->detail->interests);
-            // $itr = str_replace(',', '","', $userDetail->detail->interests);
-            //dd($interests);
-            //dd(json_encode($userDetail->detail->interests));
-            // $test = UserInterest::min('user_id');
-            //dd($test);
-            // $match = UserDetail::where('interests','regexp',$interests)->pluck('user_id');
-            //$user = UserDetail::with('user')->find(Auth::user()->id);
-            $id1 = $id->toArray();
-            //$user1 = User::with('detail')->find($id);
-            $user = User::with('detail')
-                    ->whereIn('id', $id1)
-                    ->orderByRaw('FIELD(id, ' . implode(',', $id1) . ')')
-                    ->get();
-            //dd($test);
-            //$match->whereJsonContains('interests', 'interests-1');
-            //dd($user);
-            
-            return view('matching.match',compact('user','id'));
+                // $interests = str_replace(',', '|', $userDetail->detail->interests);
+                // $itr = str_replace(',', '","', $userDetail->detail->interests);
+                //dd($interests);
+                //dd(json_encode($userDetail->detail->interests));
+                // $test = UserInterest::min('user_id');
+                //dd($test);
+                // $match = UserDetail::where('interests','regexp',$interests)->pluck('user_id');
+                //$user = UserDetail::with('user')->find(Auth::user()->id);
+                //$user1 = User::with('detail')->find($id);
+                $id_user = $id1->toArray();
+                if($id_user != null){
+                    $user = User::with('detail')
+                            ->whereIn('id', $id_user)
+                            ->orderByRaw('FIELD(id, ' . implode(',', $id_user) . ')')
+                            ->get()
+                            ->take(10);
+                } else{
+                    $user = User::with('detail')
+                            ->get()
+                            ->random(5);
+                    //return view('matching.match_profile_edit_new');
+                }
+                
+                //dd($test);
+                //$match->whereJsonContains('interests', 'interests-1');
+                //dd($user->id);
+                
+                return view('matching.match',compact('user','id','id1'));
+            }
         }
+        return redirect("login")->withSuccess('Opps! You do not have access');
     }
 
     /**
