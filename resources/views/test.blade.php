@@ -26,11 +26,7 @@
     
         <br>
         
-    @foreach($frd as $p)
-        @foreach($p as $p1)
-            {{$p1}}
-        @endforeach
-    @endforeach
+  
     </tbody>
 </table>
     

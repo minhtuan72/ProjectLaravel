@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Models\User;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
 use Hash;
   
 class AuthController extends Controller
@@ -45,8 +47,9 @@ class AuthController extends Controller
    
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('dashboard')
-                        ->withSuccess('You have Successfully loggedin');
+            // return redirect()->intended('dashboard')
+            //             ->withSuccess('You have Successfully loggedin');
+            return Redirect::route('profile');
         }
   
         return redirect("login")->withSuccess('Oppes! You have entered invalid credentials');
@@ -80,6 +83,7 @@ class AuthController extends Controller
     {
         if(Auth::check()){
             return view('auth.dashboard');
+            // return view('app');
         }
   
         return redirect("login")->withSuccess('Opps! You do not have access');
@@ -109,6 +113,8 @@ class AuthController extends Controller
         Session::flush();
         Auth::logout();
   
-        return Redirect('login');
+        // return Redirect('login');
+        return Redirect::route('test');
+        // return Redirect('Auth/Login');
     }
 }

@@ -8,29 +8,75 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tbl_relations;
 use App\Models\User;
+use App\Services\UserService;
 
 class FriendController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    //Khai bao ham khoi tao
+    public function __construct(private UserService $userService)
+    {
+    }
+
+    //hien thi danh sach user trong he thong
     public function index()
     {
         if(Auth::check()){
-            $fen = DB :: table('users') 
-                -> where('id','<>', Auth::user()->id);
+            $index = $this->userService->index();
 
-            $fen1 = $fen -> get();
+            $fen1 = $index['user'];
+            $check3 = $index['checkUser'];
+            return view('friends.friend', compact('fen1', 'check3'));
+        }
+        return redirect("login")->withSuccess('Opps! You do not have access');   
+    }
 
-            $check = DB::table('tbl_relations')
-                    -> where('user_send_id','=', Auth::user()->id)
-                    ->orwhere('user_nhan_id','=', Auth::user()->id);
-            $check2 = $check -> pluck('user_nhan_id');
-            $check3 = $check -> get();
-            return view('friends.friend', compact('fen1','check2', 'check3'));
+    //gui loi moi ket ban
+    public function apply(Request $request)
+    {
+        return $this->userService->apply($request);
+    }
+
+    //dong y ket ban
+    public function add(Request $request)
+    {
+        return $this->userService->add($request);
+    }
+
+    //xoa ban be
+    public function dele(Request $request)
+    {
+        $list1 = $this->userService->dele($request);
+  
+        return $list1;
+    }
+
+    //hien thi danh sach ban be
+    public function list()
+    {
+        if(Auth::check()){
+            $list = $this->userService->list();
+
+            $ch1 = $list['ch'];
+            $fen1 = $list['fen'];
+        
+            return view('friends.friend_list', compact('fen1','ch1'));
         }
         return redirect("login")->withSuccess('Opps! You do not have access');
-        
+    }
+
+    //hien thi profile ban be
+    public function show(Request $request)
+    { 
+        if(Auth::check()){
+            $show = $this->userService->show($request);
+            if ($show!='-1') {
+                $sh = $show;
+                return view('friends.friend_page', compact('sh'));
+            }else{               
+                return 'Khong phai ban be!';
+            }
+        }
+        return redirect("login")->withSuccess('Opps! You do not have access');
     }
 
     /**
@@ -52,36 +98,6 @@ class FriendController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
-    { 
-        if(Auth::check()){
-            $id = $request -> id;
-            $iduser = Auth::user()->id;
-            $isExist =    DB :: table('tbl_relations') 
-                    -> select('*')
-                    ->where([
-                        ["user_nhan_id", '=', $id],
-                        ["user_send_id", '=', $iduser],
-                        ["status", '=', 'Y']
-                    ])
-                    ->orwhere([
-                        ["user_nhan_id", '=', $iduser],
-                        ["user_send_id", '=', $id],
-                        ["status", '=', 'Y']
-                    ])
-                    ->exists();
-            
-                    if ($isExist) {
-                        $sh = DB :: table('users') 
-                            -> where('id','=', $id)
-                            ->first();
-                        return view('friends.friend_page', compact('sh'));
-                    }else{               
-                        return 'Khong phai ban be!';
-                    }
-            }
-            return redirect("login")->withSuccess('Opps! You do not have access');
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -105,104 +121,6 @@ class FriendController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-    public function add(Request $request)
-    {
-        $iduser = Auth::user()->id;
-        $id = $request->id;
-        $l = DB::table('tbl_relations')
-                ->where([
-                    ["user_nhan_id", '=', $iduser],
-                    ["user_send_id", '=', $id]
-                ])
-                ->update([
-                    'status' =>'Y',
-                ]);
-        
-        return $l;
-    }
-    public function dele(Request $request)
-    {
-        $iduser = Auth::user()->id;
-        $id = $request->id;
-        $list = DB::table('tbl_relations')
-                ->where([
-                    ["user_nhan_id", '=', $id],
-                    ["user_send_id", '=', $iduser]
-                ])
-                ->orwhere([
-                    ["user_nhan_id", '=', $iduser],
-                    ["user_send_id", '=', $id]
-                ]);
-        $list1 = $list->delete();
-  
-        return $list1;
-    }
-
-    public function apply(Request $request)
-    {
-        $id = $request->id;
-     
-        $iduser = Auth::user()->id;
-
-        // $isExist = tbl_relations::select("*")
-        //     ->where("user_nhan_id", $id)
-        //     ->exists();
-
-        //Kiem tra 2 user co quan he chua
-        $isExist =    DB :: table('tbl_relations') 
-                -> select('*')
-                ->where([
-                    ["user_nhan_id", '=', $id],
-                    ["user_send_id", '=', $iduser]
-                ])
-                ->orwhere([
-                    ["user_nhan_id", '=', $iduser],
-                    ["user_send_id", '=', $id]
-                ])
-                ->exists();
-                 
-        if ($isExist) {
-            echo 'Da co';
-        }else{
-
-            DB::table('tbl_relations')
-            ->insert([
-                'user_send_id' => $iduser,
-                'user_nhan_id' => $id,
-                'status' => 'N'
-            ]);
-            echo 'Da them';
-        }
-       
-        echo $iduser;
-        return $id;
-    }
-
-    public function list()
-    {
-        if(Auth::check()){
-            $ch = DB::table('tbl_relations')
-                    -> where([
-                        ['user_send_id','=', Auth::user()->id],
-                        ['status','=', 'Y']
-                    ])
-                    ->orwhere([
-                        ['user_nhan_id','=', Auth::user()->id],
-                        ['status','=', 'Y']
-                    ]);
-            $ch1 = $ch -> get();  
-                
-            $fen = DB :: table('users') 
-                    -> where('id','<>', Auth::user()->id);
-
-            $fen1 = $fen -> get();
-
-            
-        
-            return view('friends.friend_list', compact('fen1','ch1'));
-        }
-        return redirect("login")->withSuccess('Opps! You do not have access');
     }
 
     public function mentions(Request $request)

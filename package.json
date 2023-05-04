@@ -2,7 +2,8 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "watch": "vite build --watch"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^4.0.0",
@@ -11,6 +12,8 @@
         "vite": "^4.1.4"
     },
     "dependencies": {
+        "@inertiajs/vue3": "^1.0.4",
+        "@vue/compiler-sfc": "^3.2.47",
         "tinymce": "^6.4.0"
     }
 }

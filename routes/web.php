@@ -7,6 +7,7 @@ use App\Http\Controllers\Friend\FriendController;
 use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\Post\CommentController;
 use App\Http\Controllers\Matching\MatchingController;
+use Inertia\Inertia;
   
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::get('registration', [AuthController::class, 'registration'])->name('regis
 Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post'); 
 Route::get('dashboard', [AuthController::class, 'dashboard']) -> name('doash'); 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
 
        //trang profile                    //phuong thuc index   //trang profile
 Route::get('profile', [ProfileController::class, 'index'])->name('profile'); 
@@ -79,3 +81,30 @@ Route::get('match-profile-edit-new', [MatchingController::class, 'edit'])->name(
 Route::post('match-profile-update', [MatchingController::class, 'update'])->name('match.update');
 Route::get('match-profile-friend/{id}', [MatchingController::class, 'match_profile_friend'])->name('match.profile_friend'); 
 Route::post('match-add', [MatchingController::class, 'add'])->name('match.add');
+
+
+
+//test
+Route::inertia('/test', 'Auth/Login')->name('test');
+Route::post(
+    '/about',
+    function () {
+        return Inertia::render(
+            'Profile/Show',
+            [
+                'title' => 'About',
+            ]
+        );
+    }
+)->name( 'about' );
+Route::get(
+    '/edit',
+    function () {
+        return Inertia::render(
+            'Profile/Edit',
+            [
+                'title' => 'Show',
+            ]
+        );
+    }
+)->name( 'edit' );
