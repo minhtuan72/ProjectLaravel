@@ -17,22 +17,21 @@ const form = useForm({
 })
 
 function submit() {
-    form.post(route('profile.update'),{
+    form.post(route('match.update'),{
         forceFormData: true,
     });
-    // router.post(route('profile.update'), form)
-  
+    // router.post(route('profile.update'), form) 
 }
 </script>
 
 <template>
     <Layout>
-    <div class="container" style="margin-left: 10%;">
+    <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header"><strong>Edit Profile Match</strong></div>
-                <div class="card-body" style="background: #fff">
+                <div class="card-body">
                     <form method="post" action="{{ route('match.update') }}" enctype="multipart/form-data">
                         <!-- Test -->
                             <!-- {{match.detail.looking_for}} -->

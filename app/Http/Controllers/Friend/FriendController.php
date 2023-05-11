@@ -21,7 +21,7 @@ class FriendController extends Controller
     public function index()
     {
         if(Auth::check()){
-            $index = $this->userService->index();
+            $index = $this->userService->listUser();
 
             $fen1 = $index['user'];
             $check3 = $index['checkUser'];
@@ -33,19 +33,27 @@ class FriendController extends Controller
     //gui loi moi ket ban
     public function apply(Request $request)
     {
-        return $this->userService->apply($request);
+        $id = $request->id;
+        $iduser = Auth::user()->id;
+
+        return $this->userService->apply($id, $iduser);
     }
 
     //dong y ket ban
     public function add(Request $request)
     {
-        return $this->userService->add($request);
+        $iduser = Auth::user()->id;
+        $id = $request->id;
+
+        return $this->userService->add($id, $iduser);
     }
 
     //xoa ban be
     public function dele(Request $request)
     {
-        $list1 = $this->userService->dele($request);
+        $iduser = Auth::user()->id;
+        $id = $request->id;
+        $list1 = $this->userService->dele($iduser, $id);
   
         return $list1;
     }
@@ -67,8 +75,11 @@ class FriendController extends Controller
     //hien thi profile ban be
     public function show(Request $request)
     { 
-        if(Auth::check()){
-            $show = $this->userService->show($request);
+        if(Auth::check()){       
+            $id = $request -> id;
+            $iduser = Auth::user()->id;
+
+            $show = $this->userService->show($id, $iduser);
             if ($show!='-1') {
                 $sh = $show;
                 return view('friends.friend_page', compact('sh'));

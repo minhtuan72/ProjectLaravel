@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class UserService
 {
     //hien thi danh sach user trong he thong
-    public function index()
+    public function listUser()
     {
             $user = DB :: table('users') 
                 -> where('id','<>', Auth::user()->id)
@@ -25,12 +25,8 @@ class UserService
     }
 
     //gui loi moi ket ban
-    public function apply(Request $request)
+    public function apply($id, $iduser)
     {
-        $id = $request->id;
-     
-        $iduser = Auth::user()->id;
-
         //Kiem tra 2 user co quan he chua
         $isExist =    DB :: table('tbl_relations') 
                 -> select('*')
@@ -47,7 +43,6 @@ class UserService
         if ($isExist) {
             echo 'Da co';
         }else{
-
             DB::table('tbl_relations')
             ->insert([
                 'user_send_id' => $iduser,
@@ -62,10 +57,8 @@ class UserService
     }
 
     //dong y ket ban
-    public function add(Request $request)
+    public function add($id, $iduser)
     {
-        $iduser = Auth::user()->id;
-        $id = $request->id;
         $l = DB::table('tbl_relations')
                 ->where([
                     ["user_nhan_id", '=', $iduser],
@@ -101,10 +94,8 @@ class UserService
     }
 
     //hien thi profile ban be
-    public function show(Request $request)
-    { 
-            $id = $request -> id;
-            $iduser = Auth::user()->id;
+    public function show($id, $iduser)
+    {
             $isExist =    DB :: table('tbl_relations') 
                     -> select('*')
                     ->where([
@@ -131,21 +122,18 @@ class UserService
     }
 
     //xoa ban be
-    public function dele(Request $request)
+    public function dele($id1, $id2)
     {
-        $iduser = Auth::user()->id;
-        $id = $request->id;
         $list = DB::table('tbl_relations')
                 ->where([
-                    ["user_nhan_id", '=', $id],
-                    ["user_send_id", '=', $iduser]
+                    ["user_nhan_id", '=', $id1],
+                    ["user_send_id", '=', $id2]
                 ])
                 ->orwhere([
-                    ["user_nhan_id", '=', $iduser],
-                    ["user_send_id", '=', $id]
+                    ["user_nhan_id", '=', $id2],
+                    ["user_send_id", '=', $id1]
                 ]);
         $list1 = $list->delete();
-  
         return $list1;
     }
 }

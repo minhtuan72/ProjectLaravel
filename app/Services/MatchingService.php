@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MatchingService
 {
-    public function index()
+    public function match()
     {
             $userDetail = User::with('detail')->find(Auth::user()->id);       
             if($userDetail->detail==null){
@@ -64,7 +64,10 @@ class MatchingService
                 
                 //dd($test);
                 //$match->whereJsonContains('interests', 'interests-1');
-                //dd($user->id);
+                // if(empty($user->detail)){
+                //     $user->detail = null;
+                // }
+            
                 return $user;
             }
     }
@@ -104,12 +107,12 @@ class MatchingService
             return $match;   
      
     }
-    public function update(Request $request)
+    public function update($matchData, $iduser)
     {
         //dd(UserInterest::where('user_id','=',Auth::user()->id)->min('created_at'));
         $time = Carbon::now('Asia/Ho_Chi_Minh');
         
-        $itr = $request->interests;
+        $itr = $matchData->interests;
         for($i = 0; $i< count($itr); $i++){
             $id_itr =Interests::where('column_interests','=',$itr[$i])->pluck('id')->first();
             UserInterest::Insert([
@@ -120,11 +123,11 @@ class MatchingService
             ]);
             //dd($id_itr);
         }
-        $min_time = UserInterest::where('user_id','=',Auth::user()->id)->min('created_at');
-        $max_time = UserInterest::where('user_id','=',Auth::user()->id)->max('created_at');
+        $min_time = UserInterest::where('user_id','=',$iduser)->min('created_at');
+        $max_time = UserInterest::where('user_id','=',$iduser)->max('created_at');
         if($min_time != $max_time){
             UserInterest::where([
-                ['user_id', '=', Auth::user()->id],
+                ['user_id', '=', $iduser],
                 ['created_at', '=', $min_time]
             ])->forceDelete();
         }
@@ -157,52 +160,52 @@ class MatchingService
         // }
 
 
-        $request->looking_for = implode(',', $request->looking_for);
-        $request->languages_spoken = implode(',', $request->languages_spoken);
-        $request->interests = implode(',', $request->interests);
+        $matchData->looking_for = implode(',', $matchData->looking_for);
+        $matchData->languages_spoken = implode(',', $matchData->languages_spoken);
+        $matchData->interests = implode(',', $matchData->interests);
        
         $isExist = UserDetail::select("*")
-            ->where("user_id",'=' , Auth::user()->id)
+            ->where("user_id",'=' , $iduser)
             ->exists();
 
         if ($isExist) {
-            $match1 = UserDetail::where('user_id','=',Auth::user()->id);
+            $match1 = UserDetail::where('user_id','=',$iduser);
             $match = $match1->update([
-                'user_id'           => $request->user_id,         //id user (primary key)
-                'location'          => $request->location,        //vi tri hien tai
-                'looking_for'       => $request->looking_for,     //nhu cau tim kiem(dang tim)
-                'gender'            => $request->gender,          //gioi tinh
-                'height'            => $request->height,          //chieu cao
-                'age'               => $request->age,             //tuoi
-                'languages_spoken'  => $request->languages_spoken,//ngon ngu noi
-                'company'           => $request->company,         //noi lam viec
-                'high_school'       => $request->high_school,     //truong cap 3
-                'grad_school'       => $request->grad_school,     //dai hoc
-                'education_level'   => $request->education_level, //trinh do hoc van
-                'your_kids'         => $request->your_kids,       //con cai
-                'smoking'           => $request->smoking,         //hut thuoc
-                'drinking'          => $request->drinking,        //uong ruou
-                'religion'          => $request->religion,        //ton giao
-                'interests'         => $request->interests,       //moi quan tam
+                'user_id'           => $matchData->user_id,         //id user (primary key)
+                'location'          => $matchData->location,        //vi tri hien tai
+                'looking_for'       => $matchData->looking_for,     //nhu cau tim kiem(dang tim)
+                'gender'            => $matchData->gender,          //gioi tinh
+                'height'            => $matchData->height,          //chieu cao
+                'age'               => $matchData->age,             //tuoi
+                'languages_spoken'  => $matchData->languages_spoken,//ngon ngu noi
+                'company'           => $matchData->company,         //noi lam viec
+                'high_school'       => $matchData->high_school,     //truong cap 3
+                'grad_school'       => $matchData->grad_school,     //dai hoc
+                'education_level'   => $matchData->education_level, //trinh do hoc van
+                'your_kids'         => $matchData->your_kids,       //con cai
+                'smoking'           => $matchData->smoking,         //hut thuoc
+                'drinking'          => $matchData->drinking,        //uong ruou
+                'religion'          => $matchData->religion,        //ton giao
+                'interests'         => $matchData->interests,       //moi quan tam
             ]);
         }else{
             UserDetail::create([
-                'user_id'           => $request->user_id,         //id user (primary key)
-                'location'          => $request->location,        //vi tri hien tai
-                'looking_for'       => $request->looking_for,     //nhu cau tim kiem(dang tim)
-                'gender'            => $request->gender,          //gioi tinh
-                'height'            => $request->height,          //chieu cao
-                'age'               => $request->age,             //tuoi
-                'languages_spoken'  => $request->languages_spoken,//ngon ngu noi
-                'company'           => $request->company,         //noi lam viec
-                'high_school'       => $request->high_school,     //truong cap 3
-                'grad_school'       => $request->grad_school,     //dai hoc
-                'education_level'   => $request->education_level, //trinh do hoc van
-                'your_kids'         => $request->your_kids,       //con cai
-                'smoking'           => $request->smoking,         //hut thuoc
-                'drinking'          => $request->drinking,        //uong ruou
-                'religion'          => $request->religion,        //ton giao
-                'interests'         => $request->interests,       //moi quan tam
+                'user_id'           => $matchData->user_id,         //id user (primary key)
+                'location'          => $matchData->location,        //vi tri hien tai
+                'looking_for'       => $matchData->looking_for,     //nhu cau tim kiem(dang tim)
+                'gender'            => $matchData->gender,          //gioi tinh
+                'height'            => $matchData->height,          //chieu cao
+                'age'               => $matchData->age,             //tuoi
+                'languages_spoken'  => $matchData->languages_spoken,//ngon ngu noi
+                'company'           => $matchData->company,         //noi lam viec
+                'high_school'       => $matchData->high_school,     //truong cap 3
+                'grad_school'       => $matchData->grad_school,     //dai hoc
+                'education_level'   => $matchData->education_level, //trinh do hoc van
+                'your_kids'         => $matchData->your_kids,       //con cai
+                'smoking'           => $matchData->smoking,         //hut thuoc
+                'drinking'          => $matchData->drinking,        //uong ruou
+                'religion'          => $matchData->religion,        //ton giao
+                'interests'         => $matchData->interests,       //moi quan tam
             ]);
         }
     }

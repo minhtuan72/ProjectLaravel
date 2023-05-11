@@ -55,14 +55,40 @@ function hide($id){
     <div class="row justify-content-center"> -->
         <!-- <div class="col-md-8"> -->
         <!-- <h3 class="text-center text-success"  style="background-color: #fff;">{{Auth()->user()->name}}</h3> -->
-        <div style="width: 100%; background-color:##1c2e42; border: 2px outset #eae1e4;  border-radius: 10px 10px 10px; margin-top: 9%;">
-            <a style="width: 50%; margin: auto;" name="" id="" class="btn btn-secondary" :href=" route('match.profile') " role="button">Profile</a>
-            <a style="width: 49%; float: right;" name="" id="" class="btn btn-secondary" :href=" route('posts.create') " role="button">Ideal Match</a>
+        <div class="btn">
+            <Link name="" id="btn-left-match" class="btn btn-secondary" :href=" route('match.profile') " role="button">Profile</Link>
+            <Link name="" id="btn-right-match" class="btn btn-secondary" :href=" route('posts.create') " role="button">Ideal Match</Link>
         </div>
        
         <div v-for="m in user">
-            <div class="card" v-bind:id="'card_'+m.id" style="display:block">
-                <div style="background-color:#fff; border: 2px outset #eae1e4;  border-radius: 10px 10px 10px;">
+            <div class="card2" v-bind:id="'card_'+m.id" style="display:block">
+                <div class="banner2">
+                    <Link  :href="route('match.profile_friend', m.id)"> 
+                        <img class="avatar-match" v-bind:src="'/upload/photo/'+m.photo">
+                    </Link>
+                </div>
+                <!-- <div class="menu2">
+                    <div class="opener2"><span></span><span></span><span></span></div>
+                </div> -->
+                <h2 class="name"><strong>&nbsp;{{m.name}}, {{m?.detail?.age}} years</strong></h2>
+                <div class="title">{{m?.detail?.gender}}</div>
+                <div class="desc"><span v-html=m.description></span></div>
+                <div class="actions">
+                    <div class="follow-info">
+                        <h2><a href="#"><span>12</span><small>Followers</small></a></h2>
+                        <h2><a href="#"><span>30</span><small>Following</small></a></h2>
+                    </div>
+                    <div class="delete-btn">
+                        <button  @click="dele(m.id)">Delete</button>
+                    </div>
+                    <div class="match-btn">
+                        <button v-bind:id="'btn_'+m.id"   @click="hide(m.id)">Match</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="card" v-bind:id="'card_'+m.id" style="display:block">
+                <div class="card-in">
                 <div class="group">
                     <Link  :href="route('match.profile_friend', m.id)"> 
                         <img style="  border-radius:100%;
@@ -121,9 +147,28 @@ function hide($id){
                         </center>
                     </div>
                 </div>         
-            </div>
+            </div> -->
         <!-- </div>
             <br/> -->
         </div>
     </Layout>
 </template>
+<style>
+.btn{
+    width: 100%; 
+}
+#btn-left-match {
+    width: 51.5%; 
+    margin-left: -2%;
+    float: left;
+}
+#btn-right-match {
+    width: 51.5%; 
+    float: right;
+    margin-right: -2%;
+}
+.card-in {
+    background-color:#fff; 
+    border: 2px outset #fff; 
+}
+</style>

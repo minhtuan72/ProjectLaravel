@@ -16,7 +16,7 @@ import Aside from '@/Components/Aside.vue';
         <div class="col-md-2">
           <side-bar />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7">
           <main class="LayoutDefault__main">
             <slot />
           </main>

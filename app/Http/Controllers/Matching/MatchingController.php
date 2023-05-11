@@ -25,7 +25,7 @@ class MatchingController extends Controller
     public function index()
     {
         if(Auth::check()){
-            $user = $this->matchingService->index();
+            $user = $this->matchingService->match();
             return Inertia::render('Matching/Match', [
                 'user' => $user
             ]);
@@ -63,7 +63,8 @@ class MatchingController extends Controller
 
     public function update(Request $request)
     {
-        $this->matchingService->update($request);
+        $iduser = Auth::user()->id;
+        $this->matchingService->update($request, $iduser);
         //dd($request->all());
         return redirect()->intended('match-profile')
             ->withSuccess('Edit Success!');

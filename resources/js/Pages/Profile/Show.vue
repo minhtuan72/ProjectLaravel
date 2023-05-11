@@ -14,14 +14,87 @@ defineProps({ user: Object })
     <div id="test">
     <div class="main" >
         <h2>IDENTITY</h2>
-        <div class="card">
-            <Link :href="route('profile_edit')" class="fa fa-pen fa-xs edit" style="margin-left:95%">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                </svg>
+        <article class="profile">
+            <div class="profile-image">
+                <img id="avatar" alt="image" v-bind:src="'upload/photo/'+user.photo">
+            </div>
+            <h2 class="profile-username">{{user.name}}</h2>
+            <small class="profile-user-handle">{{user.email}}</small>
+
+            <div class="profile-introduces">
+                <h2>Introduces</h2>
+            </div>
+            <div class="info">
+                <div class="column">
+                    <div class="left-column">
+                        <i class="icon-geo" ></i>
+                    </div>
+                    <div class="right-column">  
+                        Den tu {{user.address}}
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="left-column">
+                        <i class="icon-hobby" ></i>
+                    </div>
+                    <div class="right-column">  
+                        So thich {{user.hobbies}}
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="left-column">
+                        <i class="icon-company-2" ></i>
+                    </div>
+                    <div class="right-column">  
+                        Cong viec hien tai {{user.job}}
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="left-column">
+                        <i class="icon-description" ></i>
+                    </div>
+                    <div class="right-column">  
+                        Mo ta {{user.description}}
+                    </div>
+                </div>
+                <div class="column"> 
+                    <Link :href="route('profile_edit')">  
+                    <button class="btn btn-primary" id="btn-edit">
+                        <div id="btn-left">
+                            <Link :href="route('profile_edit')" class="icon-edit-2"></Link> 
+                        </div>
+                        <div id="btn-rigth">  
+                            Chinh sua trang ca nhan
+                        </div>
+                    </button> 
+                    </Link> 
+                </div>
+            </div>
+            <!-- <div class="profile-actions">
+                <button class="btn btn--primary">Follow</button>
+                <button class="btn btn--icon">
+                    <i class="ph-export"></i>
+                </button>
+                <button class="btn btn--icon">
+                    <i class="ph-dots-three-outline-fill"></i>
+                </button>
+            </div>
+            <div class="profile-links">
+                <a href="#" class="link link--icon">
+                    <i class="ph-twitter-logo"></i>
+                </a>
+                <a href="#" class="link link--icon">
+                    <i class="ph-facebook-logo"></i>
+                </a>
+                <a href="#" class="link link--icon">
+                    <i class="ph-instagram-logo"></i>
+                </a>
+            </div> -->
+        </article>
+        <!-- <div class="card">
+            <Link :href="route('profile_edit')" class="icon-edit">
             </Link>
-            <div class="card-body" style="background: none">
+            <div class="card-body" id="test">
                 <table>
                     <tbody>
                         <tr>
@@ -61,7 +134,7 @@ defineProps({ user: Object })
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> -->
     </div>
     </div>
     <!-- End -->
@@ -69,12 +142,72 @@ defineProps({ user: Object })
 </template>
 <style>
 #avatar {
-            height: 250px;
-            width: 250px;
-            border-radius:100%;
-            -moz-border-radius:50%;
-            -webkit-border-radius:50%;
-            object-fit: circle(50px at 50% 50%); 
-            margin: auto;
-        }
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%; 
+    }
+#test {
+    background: none;
+}
+.column{
+           height: 35px;
+           /* background: #fff; */
+       }
+       .left-column {
+           width: 7%;
+           height: 100%;
+           /* background: #ddd; */
+           float: left;
+           margin-left: -30%;
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+       }
+       .right-column {
+           width: 100%;
+           height: 100%;
+           text-align: left;
+           /* background: #959595; */
+           float: right;
+           font-size: medium;
+           margin-right: 10%;
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+       }
+
+#btn-edit {
+    margin-top: 10%;
+    /* margin-bottom: 10%; */
+    color: #d5d5dd;
+    background-color: #3a3b3c;
+    border-color: #3a3b3c;
+    width: 100%;
+}
+#btn-left {
+    width: 7%;
+    height: 100%;
+    /* background: #ddd; */
+    float: left;
+    /* margin-left: -30%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#btn-right{
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    /* background: #959595; */
+    float: right;
+    font-size: medium;
+    /* margin-right: 10%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 </style>

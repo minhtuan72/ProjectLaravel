@@ -39,31 +39,9 @@ class ProfileService
             return $prof1;
     }
 
-    public function update(Request $request )
+    public function update($userData, $iduser)
     { 
-            //dd($request->name);
-            //Kiểm tra ngoại lệ (Hiển thị ở page phải dùng $errors->has('photo'))
-            $this->validate($request, 
-                [
-                    //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
-                    'photo' => 'mimes:jpg,jpeg,png,gif|max:2048',
-
-                    'name'=>'max:255',
-                    'address'=>'max:255',
-                    'hobbies'=>'max:255',
-                    'job'=>'max:255',
-                    'description'=>'max:4294967295 ',
-                ],			
-                [
-                    //Tùy chỉnh hiển thị thông báo không thõa điều kiện
-                    'photo.mimes' => 'Chỉ chấp nhận hình thẻ với đuôi .jpg .jpeg .png .gif',
-                    'name.max' => 'Nhập không quá 50 ký tự',
-                    'address.max' => 'Nhập không quá 50 ký tự',
-                    'hobbies.max' => 'Nhập không quá 50 ký tự',
-                    'job.max' => 'Nhập không quá 50 ký tự',
-                    'description.max' => 'Nhập không quá 4294967295 ký tự',
-                ]
-            );
+           // dd($userData->name);
            
             //Xóa ảnh cũ
             $getHT = DB::table('users')->select('photo')->where('id', '=', Auth::user()->id)->get();
@@ -73,21 +51,30 @@ class ProfileService
             }
 
             //Tải file lên thư mục upload/photo
-            $image = $request->file('photo');
+            $image = $userData->file('photo');
             $avatarName = time().'.'.$image->getClientOriginalExtension();
             $image->move(public_path('upload/photo'), $avatarName);
-
+            $userData->photo = $avatarName;
             //Update dữ liệu
-            DB::table('users')
-            ->where('id', '=', Auth::user()->id)
-            ->update([
-                'name' => $request->name,
-                // 'email' => $request->email,
-                'address' => $request->input('address',''),
-                'hobbies' => $request->input('hobbies',''),
-                'job' => $request->input('job',''),
-                'description' =>$request->description,
-                'photo'=>$avatarName
-            ]);
+            User::where('id','=',$iduser)
+                    ->update([
+                            'name' => $userData->input('name'),
+                            'address' => $userData->input('address',''),
+                            'hobbies' => $userData->input('hobbies',''),
+                            'job' => $userData->input('job',''),
+                            'description' =>$userData->description,
+                            'photo'=>$avatarName
+                        ]);
+                
+            // DB::table('users')
+            // ->where('id', '=', $iduser)
+            // ->update([
+            //     'name' => $userData->input('name'),
+            //     'address' => $userData->input('address',''),
+            //     'hobbies' => $userData->input('hobbies',''),
+            //     'job' => $userData->input('job',''),
+            //     'description' =>$userData->description,
+            //     'photo'=>$avatarName
+            // ]);
     }
 }
